@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta de Premios - Tienda de Ropa</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f4f4f4; }
+        .contenedor { position: relative; margin-top: 50px; }
+        
+        /* La Ruleta */
+        #canvas { border: 5px solid #333; border-radius: 50%; background: white; }
+        
+        /* El Marcador (la flechita) */
+        .marcador {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 20px solid transparent;
+            border-right: 20px solid transparent; border-top: 40px solid red; z-index: 10;
+        }
+
+        .formulario { margin-top: 30px; text-align: center; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #ccc; }
+        #resultado { margin-top: 20px; font-weight: bold; font-size: 1.2rem; color: #d9534f; }
+    </style>
+</head>
+<body>
+
+    <h2>¡Gira y Gana!</h2>
+
+    <div class="contenedor">
+        <div class="marcador"></div>
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
+
+    <div class="formulario">
+        <input type="email" id="email" placeholder="Ingresa tu Gmail para jugar" required>
+        <button id="botonGirar">¡GIRAR!</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const btnGirar = document.getElementById('botonGirar');
+        const inputEmail = document.getElementById('email');
+        const txtResultado = document.getElementById('resultado');
+
+        const premios = ["10% OFF", "Envío Gratis", "Volvé a intentar", "20% OFF", "Regalo Sorpresa", "5% OFF"];
+        const colores = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#FF33A1", "#FF8C33"];
+        
+        let anguloActual = 0;
+        const numPremios = premios.length;
+        const arco = Math.PI * 2 / numPremios;
+
+        // Dibujar la ruleta
+        function dibujarRuleta() {
+            for (let i = 0; i < numPremios; i++) {
+                const angulo = i * arco;
+                ctx.fillStyle = colores[i];
+                ctx.beginPath();
+                ctx.moveTo(200, 200);
+                ctx.arc(200, 200, 200, angulo, angulo + arco);
+                ctx.lineTo(200, 200);
+                ctx.fill();
+
+                // Texto
+                ctx.save();
+                ctx.translate(200 + Math.cos(angulo + arco / 2) * 150, 200 + Math.sin(angulo + arco / 2) * 150);
+                ctx.rotate(angulo + arco / 2 + Math.PI / 2);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 14px Arial";
+                ctx.fillText(premios[i], -ctx.measureText(premios[i]).width / 2, 0);
+                ctx.restore();
+            }
+        }
+
+        dibujarRuleta();
+
+        btnGirar.addEventListener('click', () => {
+            if (!inputEmail.value.includes("@")) {
+                alert("Por favor, poné un Gmail válido");
+                return;
+            }
+
+            btnGirar.disabled = true;
+            const giroExtra = Math.floor(Math.random() * 360) + 3600; // Al menos 10 vueltas
+            const tiempoAnimacion = 5000; // 5 segundos
+
+            canvas.style.transition = `transform ${tiempoAnimacion}ms cubic-bezier(0.1, 0, 0.2, 1)`;
+            canvas.style.transform = `rotate(${giroExtra}deg)`;
+
+            setTimeout(() => {
+                const anguloFinal = giroExtra % 360;
+                // Cálculo para saber qué premio tocó (ajustado al sistema de coordenadas de Canvas)
+                const indiceGanador = Math.floor((360 - (anguloFinal % 360)) / (360 / numPremios)) % numPremios;
+                const premioGanado = premios[indiceGanador];
+                const codigo = "PROMO" + Math.random().toString(36).substring(7).toUpperCase();
+
+                if(premioGanado === "Volvé a intentar") {
+                    txtResultado.innerText = "¡Ufa! Volvé a intentar mañana.";
+                } else {
+                    txtResultado.innerText = `¡GANASTE! Premio: ${premioGanado}. Código: ${codigo}`;
+                    guardarEnExcel(inputEmail.value, premioGanado, codigo);
+                }
+            }, tiempoAnimacion);
+        });
+
+function guardarEnExcel(email, premio, codigo) {
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyTNT6wjLxY6OKvQDZFrJM0rQyNAWUoDi7eGZ5D61kfPW1ye6KRULOP7vxn1_r-fvqzQg/exec";
+
+    fetch(URL_SCRIPT, {
+        method: "POST",
+        mode: "no-cors", // Esto evita problemas de permisos de dominios
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, premio: premio, codigo: codigo })
+    })
+    .then(() => {
+        console.log("¡Datos guardados en Google Sheets!");
+    })
+    .catch(error => console.error("Error al guardar:", error));
+}
+    </script>
+</body>
+</html>
