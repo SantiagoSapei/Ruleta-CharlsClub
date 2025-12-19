@@ -3,42 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta de Premios - Tienda de Ropa</title>
+    <title>CharlsClub - Ruleta Navideña</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f4f4f4; }
-        .contenedor { position: relative; margin-top: 50px; }
-        
-        /* La Ruleta */
-        #canvas { border: 5px solid #333; border-radius: 50%; background: white; }
-        
-        /* El Marcador (la flechita) */
-        .marcador {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 20px solid transparent;
-            border-right: 20px solid transparent; border-top: 40px solid red; z-index: 10;
+        /* DECLARACIÓN DE LA FUENTE LOCAL */
+        @font-face {
+            font-family: 'LamoricRowen';
+            src: url('Lamoric Rowen TTF.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        .formulario { margin-top: 30px; text-align: center; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px; }
-        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        button:disabled { background: #ccc; }
-        #resultado { margin-top: 20px; font-weight: bold; font-size: 1.2rem; color: #d9534f; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: url('FotoEros.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(4px);
+            z-index: -1;
+        }
+
+        /* APLICACIÓN DE LA FUENTE AL TÍTULO */
+        .titulo-charls {
+            font-family: 'LamoricRowen', serif;
+            color: #284863;
+            font-size: 5rem; /* Aumentado para lucir la tipografía */
+            margin-top: 30px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            letter-spacing: 8px; /* Espaciado elegante */
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .contenedor-ruleta { position: relative; }
+        
+        #canvas { 
+            border: 10px solid white; 
+            border-radius: 50%; 
+            background: white; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .marcador {
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 20px solid transparent;
+            border-right: 20px solid transparent; border-top: 40px solid #d9534f; z-index: 10;
+        }
+
+        .cartel-navideno {
+            background: #284863;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 4px solid #ffffff;
+            font-family: 'LamoricRowen', serif; /* También aplicada aquí para consistencia */
+            font-size: 1.8rem;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transform: rotate(3deg);
+            max-width: 250px;
+        }
+
+        .formulario { 
+            margin-top: 40px; 
+            text-align: center; 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            width: 350px;
+            z-index: 5;
+        }
+
+        input { 
+            padding: 14px; 
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            width: 90%; 
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        button { 
+            padding: 15px 30px; 
+            background: #284863; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'LamoricRowen', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        button:hover { background: #1a3042; transform: translateY(-2px); }
+        button:disabled { background: #ccc; transform: none; }
+
+        #resultado { margin-top: 15px; font-weight: bold; color: #d9534f; font-size: 1.2rem; }
+
+        .logo-final {
+            margin-top: -90px;
+            width: 350px; /* Un poco más grande como pediste */
+            max-width: 90%;
+            height: auto;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+            transition: transform 0.3s;
+        }
+        
+        .logo-final:hover {
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
 
-    <h2>¡Gira y Gana!</h2>
+    <h1 class="titulo-charls">CharlsClub</h1>
 
-    <div class="contenedor">
-        <div class="marcador"></div>
-        <canvas id="canvas" width="400" height="400"></canvas>
+    <div class="main-container">
+        <div class="contenedor-ruleta">
+            <div class="marcador"></div>
+            <canvas id="canvas" width="400" height="400"></canvas>
+        </div>
+        
+        <div class="cartel-navideno">
+            🎄<br>RULETA NAVIDEÑA
+        </div>
     </div>
 
     <div class="formulario">
         <input type="email" id="email" placeholder="Ingresa tu Gmail para jugar" required>
+        <br>
         <button id="botonGirar">¡GIRAR!</button>
         <p id="resultado"></p>
     </div>
+
+    <img src="TituloCharlsClub.png" alt="CharlsClub Logo" class="logo-final">
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -48,13 +178,11 @@
         const txtResultado = document.getElementById('resultado');
 
         const premios = ["10% OFF", "Envío Gratis", "Volvé a intentar", "20% OFF", "Regalo Sorpresa", "5% OFF"];
-        const colores = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#FF33A1", "#FF8C33"];
+        const colores = ["#284863", "#7bc3a7", "#1f324a", "#2a3d6f", "#6fa6e3", "#b8fcf5"];
         
-        let anguloActual = 0;
         const numPremios = premios.length;
         const arco = Math.PI * 2 / numPremios;
 
-        // Dibujar la ruleta
         function dibujarRuleta() {
             for (let i = 0; i < numPremios; i++) {
                 const angulo = i * arco;
@@ -65,7 +193,6 @@
                 ctx.lineTo(200, 200);
                 ctx.fill();
 
-                // Texto
                 ctx.save();
                 ctx.translate(200 + Math.cos(angulo + arco / 2) * 150, 200 + Math.sin(angulo + arco / 2) * 150);
                 ctx.rotate(angulo + arco / 2 + Math.PI / 2);
@@ -85,15 +212,14 @@
             }
 
             btnGirar.disabled = true;
-            const giroExtra = Math.floor(Math.random() * 360) + 3600; // Al menos 10 vueltas
-            const tiempoAnimacion = 5000; // 5 segundos
+            const giroExtra = Math.floor(Math.random() * 360) + 3600;
+            const tiempoAnimacion = 5000;
 
             canvas.style.transition = `transform ${tiempoAnimacion}ms cubic-bezier(0.1, 0, 0.2, 1)`;
             canvas.style.transform = `rotate(${giroExtra}deg)`;
 
             setTimeout(() => {
                 const anguloFinal = giroExtra % 360;
-                // Cálculo para saber qué premio tocó (ajustado al sistema de coordenadas de Canvas)
                 const indiceGanador = Math.floor((360 - (anguloFinal % 360)) / (360 / numPremios)) % numPremios;
                 const premioGanado = premios[indiceGanador];
                 const codigo = "PROMO" + Math.random().toString(36).substring(7).toUpperCase();
@@ -107,20 +233,17 @@
             }, tiempoAnimacion);
         });
 
-function guardarEnExcel(email, premio, codigo) {
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyTNT6wjLxY6OKvQDZFrJM0rQyNAWUoDi7eGZ5D61kfPW1ye6KRULOP7vxn1_r-fvqzQg/exec";
-
-    fetch(URL_SCRIPT, {
-        method: "POST",
-        mode: "no-cors", // Esto evita problemas de permisos de dominios
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email, premio: premio, codigo: codigo })
-    })
-    .then(() => {
-        console.log("¡Datos guardados en Google Sheets!");
-    })
-    .catch(error => console.error("Error al guardar:", error));
-}
+        function guardarEnExcel(email, premio, codigo) {
+            const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyTNT6wjLxY6OKvQDZFrJM0rQyNAWUoDi7eGZ5D61kfPW1ye6KRULOP7vxn1_r-fvqzQg/exec";
+            fetch(URL_SCRIPT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email, premio: premio, codigo: codigo })
+            })
+            .then(() => console.log("¡Datos guardados!"))
+            .catch(error => console.error("Error:", error));
+        }
     </script>
 </body>
 </html>
