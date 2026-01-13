@@ -3,147 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CharlsClub - Ruleta Navideña</title>
+    <title>CharlsClub - Ruleta del Mes</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     
     <style>
-        /* DECLARACIÓN DE LA FUENTE LOCAL */
+        /* Mantenemos tu estilo original */
         @font-face {
             font-family: 'LamoricRowen';
             src: url('Lamoric Rowen TTF.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            background-image: url('FotoEros.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-            padding-bottom: 80px;
+            display: flex; flex-direction: column; align-items: center; 
+            margin: 0; padding: 0; min-height: 100vh;
+            background-image: url('FotoEros.jpg'); background-size: cover;
+            background-position: center; background-attachment: fixed;
+            position: relative; padding-bottom: 50px;
+            overflow-x: hidden;
         }
 
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(4px);
-            z-index: -1;
+            content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); z-index: -1;
         }
 
-        /* APLICACIÓN DE LA FUENTE AL TÍTULO */
         .titulo-charls {
-            font-family: 'LamoricRowen', serif;
-            color: #284863;
-            font-size: 5rem; /* Aumentado para lucir la tipografía */
-            margin-top: 30px;
-            margin-bottom: 10px;
+            font-family: 'LamoricRowen', serif; 
+            color: #284863; 
+            font-size: clamp(2.5rem, 10vw, 5rem); 
+            margin-top: 20px; margin-bottom: 10px; 
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
-            letter-spacing: 8px; /* Espaciado elegante */
-            text-transform: uppercase;
-            text-align: center;
+            letter-spacing: clamp(2px, 2vw, 8px); 
+            text-transform: uppercase; text-align: center;
+            padding: 0 10px;
         }
 
         .main-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 20px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; flex-wrap: wrap; margin-top: 10px;
+            width: 100%;
         }
 
-        .contenedor-ruleta { position: relative; }
+        .contenedor-ruleta { 
+            position: relative; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
         
         #canvas { 
-            border: 10px solid white; 
-            border-radius: 50%; 
-            background: white; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 8px solid white; border-radius: 50%; 
+            background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 5s cubic-bezier(0.1, 0, 0.2, 1);
+            max-width: 85vw; 
+            height: auto;
         }
         
-        .marcador {
-            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 20px solid transparent;
-            border-right: 20px solid transparent; border-top: 40px solid #d9534f; z-index: 10;
+        .logo-centro-estatico {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 110px;
+            height: 110px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #284863;
+            z-index: 20;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        .cartel-navideno {
-            background: #284863;
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            border: 4px solid #ffffff;
-            font-family: 'LamoricRowen', serif; /* También aplicada aquí para consistencia */
-            font-size: 1.8rem;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            transform: rotate(3deg);
-            max-width: 250px;
+        .logo-centro-estatico img { width: 85%; height: auto; }
+
+        .marcador {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent; 
+            border-top: 35px solid #e2d5ba;
+            z-index: 30;
+        }
+
+        .cartel-promo {
+            background: #284863; color: white; padding: 15px; border-radius: 15px;
+            border: 4px solid #ffffff; font-family: 'LamoricRowen', serif;
+            font-size: clamp(1.2rem, 5vw, 1.8rem); 
+            text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transform: rotate(3deg); max-width: 200px;
         }
 
         .formulario { 
-            margin-top: 40px; 
-            text-align: center; 
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            width: 350px;
-            z-index: 5;
+            margin-top: 30px; text-align: center; background: rgba(255, 255, 255, 0.95); 
+            padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            width: 90%; max-width: 350px; z-index: 5;
         }
 
-        input { 
-            padding: 14px; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            width: 90%; 
-            margin-bottom: 15px;
-            font-size: 1rem;
-        }
-
+        input { padding: 12px; border: 1px solid #ccc; border-radius: 8px; width: 90%; margin-bottom: 15px; font-size: 1rem; }
+        
         button { 
-            padding: 15px 30px; 
-            background: #284863; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
+            padding: 15px 30px; background: #284863; color: white; border: none; 
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; 
+            font-size: 1rem; transition: all 0.3s ease; font-family: 'LamoricRowen', sans-serif; 
+            letter-spacing: 2px; 
+        }
+        button:hover { background: #1a3042; transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* Estilos para el mensaje de "Ya participaste" */
+        #mensajeYaParticipo {
+            display: none;
+            color: #d9534f;
             font-weight: bold;
-            width: 100%;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: 'LamoricRowen', sans-serif;
-            letter-spacing: 2px;
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
 
-        button:hover { background: #1a3042; transform: translateY(-2px); }
-        button:disabled { background: #ccc; transform: none; }
-
-        #resultado { margin-top: 15px; font-weight: bold; color: #d9534f; font-size: 1.2rem; }
-
-        .logo-final {
-            margin-top: -90px;
-            width: 350px; /* Un poco más grande como pediste */
-            max-width: 90%;
-            height: auto;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
-            transition: transform 0.3s;
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        
+        .modal-premio { 
+            background: white; padding: 30px; border-radius: 20px; text-align: center; 
+            max-width: 400px; width: 85%; border: 5px solid #284863; 
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         
-        .logo-final:hover {
-            transform: scale(1.05);
-        }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .modal-premio h2 { font-family: 'LamoricRowen', serif; color: #284863; margin-top: 0; font-size: 1.5rem; }
+        .modal-premio .premio-texto { font-size: 1.8rem; color: #d9534f; font-weight: bold; margin: 10px 0; }
+        .modal-premio .codigo-texto { font-size: 1.1rem; background: #eee; padding: 10px; border-radius: 5px; margin: 15px 0; border: 1px dashed #284863; }
+        
+        .sucursales { margin-top: 15px; font-size: 0.8rem; text-align: left; border-top: 1px solid #ddd; padding-top: 15px; }
+        .sucursales a { color: #284863; text-decoration: none; }
 
+        .logo-final { 
+            margin-top: 20px; width: 280px; max-width: 80%; 
+            height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)); 
+        }
     </style>
 </head>
 <body>
@@ -154,95 +155,174 @@
         <div class="contenedor-ruleta">
             <div class="marcador"></div>
             <canvas id="canvas" width="400" height="400"></canvas>
+            <div class="logo-centro-estatico">
+                <img src="logo charls.PNG" alt="Logo Charls">
+            </div>
         </div>
-        
-        <div class="cartel-navideno">
-            🎄<br>RULETA NAVIDEÑA
-        </div>
+        <div class="cartel-promo">✨<br>RULETA DEL MES</div>
     </div>
 
     <div class="formulario">
-        <input type="email" id="email" placeholder="Ingresa tu Gmail para jugar" required>
-        <br>
-        <button id="botonGirar">¡GIRAR!</button>
-        <p id="resultado"></p>
+        <div id="camposRegistro">
+            <input type="email" id="email" placeholder="Ingresa tu Gmail para jugar" required>
+            <br>
+            <button id="botonGirar">¡GIRAR!</button>
+        </div>
+        <div id="mensajeYaParticipo">
+            ⚠️ Ya has participado este mes desde este dispositivo.
+        </div>
     </div>
 
     <img src="TituloCharlsClub.png" alt="CharlsClub Logo" class="logo-final">
+
+    <div id="overlay" class="overlay">
+        <div class="modal-premio" id="contenidoGanador">
+            <h2>¡FELICIDADES!</h2>
+            <p>Tu premio es:</p>
+            <div class="premio-texto" id="modalPremio"></div>
+            <p>Código de validación:</p>
+            <div class="codigo-texto" id="modalCodigo"></div>
+            <p><strong>⚠️ Tomá una captura de pantalla.</strong></p>
+            <a href="https://www.instagram.com/charlsclub_/" target="_blank" style="color:#d9534f; font-weight:bold;">@Charlsclub</a>
+            <br><br>
+            <button onclick="cerrarModal()" style="width:auto; padding:10px 20px;">CERRAR</button>
+        </div>
+
+        <div class="modal-premio" id="contenidoPerdedor" style="display:none;">
+            <h2>GRACIAS POR PARTICIPAR</h2>
+            <p>Lamentablemente no has obtenido un premio esta vez.</p>
+            <button onclick="cerrarModal()" style="width:auto; padding:10px 20px;">FINALIZAR</button>
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const btnGirar = document.getElementById('botonGirar');
         const inputEmail = document.getElementById('email');
-        const txtResultado = document.getElementById('resultado');
+        const overlay = document.getElementById('overlay');
+        const camposRegistro = document.getElementById('camposRegistro');
+        const mensajeYaParticipo = document.getElementById('mensajeYaParticipo');
 
-        const premios = ["10% OFF", "Envío Gratis", "Volvé a intentar", "20% OFF", "Regalo Sorpresa", "5% OFF"];
-        const colores = ["#284863", "#7bc3a7", "#1f324a", "#2a3d6f", "#6fa6e3", "#b8fcf5"];
-        
-        const numPremios = premios.length;
-        const arco = Math.PI * 2 / numPremios;
+        // --- LÓGICA DE BLOQUEO POR DISPOSITIVO ---
+        function verificarParticipacion() {
+            if (localStorage.getItem('charlsClubRuletaParticipado')) {
+                btnGirar.disabled = true;
+                camposRegistro.style.opacity = "0.5";
+                inputEmail.disabled = true;
+                mensajeYaParticipo.style.display = "block";
+                return true;
+            }
+            return false;
+        }
+
+        // Ejecutar al cargar la página
+        verificarParticipacion();
+
+        const configPremios = [
+            { nombre: "Vuelve a intentar", prob: 30, color: "#1f324a" },
+            { nombre: "5% OFF", prob: 35, color: "#7bc3a7" },
+            { nombre: "Envío Gratis", prob: 15, color: "#2a3d6f" },
+            { nombre: "10% OFF", prob: 10, color: "#284863" },
+            { nombre: "20% OFF", prob: 5, color: "#6fa6e3" },
+            { nombre: "25% OFF", prob: 3, color: "#b8fcf5" },
+            { nombre: "Regalo Sorpresa", prob: 2, color: "#e2d5ba" }
+        ];
+
+        const numPremios = configPremios.length;
+        const gradosPorSegmento = 360 / numPremios;
+        let rotacionAcumulada = 0;
 
         function dibujarRuleta() {
-            for (let i = 0; i < numPremios; i++) {
-                const angulo = i * arco;
-                ctx.fillStyle = colores[i];
+            const radio = 200;
+            const centro = 200;
+            const arco = (2 * Math.PI) / numPremios;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            configPremios.forEach((premio, i) => {
+                const anguloInicio = i * arco;
+                ctx.fillStyle = premio.color;
                 ctx.beginPath();
-                ctx.moveTo(200, 200);
-                ctx.arc(200, 200, 200, angulo, angulo + arco);
-                ctx.lineTo(200, 200);
+                ctx.moveTo(centro, centro);
+                ctx.arc(centro, centro, radio, anguloInicio, anguloInicio + arco);
+                ctx.lineTo(centro, centro);
                 ctx.fill();
-
                 ctx.save();
-                ctx.translate(200 + Math.cos(angulo + arco / 2) * 150, 200 + Math.sin(angulo + arco / 2) * 150);
-                ctx.rotate(angulo + arco / 2 + Math.PI / 2);
-                ctx.fillStyle = "white";
-                ctx.font = "bold 14px Arial";
-                ctx.fillText(premios[i], -ctx.measureText(premios[i]).width / 2, 0);
+                ctx.translate(centro, centro);
+                ctx.rotate(anguloInicio + arco / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = (premio.color === "#b8fcf5" || premio.color === "#e2d5ba") ? "#284863" : "white";
+                ctx.font = "bold 13px Arial"; 
+                ctx.fillText(premio.nombre, radio - 15, 7);
                 ctx.restore();
-            }
+            });
         }
 
         dibujarRuleta();
 
         btnGirar.addEventListener('click', () => {
-            if (!inputEmail.value.includes("@")) {
-                alert("Por favor, poné un Gmail válido");
-                return;
-            }
+            // Re-verificar antes de girar
+            if (verificarParticipacion()) return;
 
+            const email = inputEmail.value.trim();
+            if (!email.includes("@")) { alert("Por favor, ingresa un correo válido"); return; }
+            
             btnGirar.disabled = true;
-            const giroExtra = Math.floor(Math.random() * 360) + 3600;
-            const tiempoAnimacion = 5000;
+            inputEmail.disabled = true;
 
-            canvas.style.transition = `transform ${tiempoAnimacion}ms cubic-bezier(0.1, 0, 0.2, 1)`;
-            canvas.style.transform = `rotate(${giroExtra}deg)`;
+            const indiceElegido = obtenerPremioPorProbabilidad();
+            const premioGanado = configPremios[indiceElegido].nombre;
+            
+            const vueltasExtras = 360 * 8; 
+            const ajusteCentro = gradosPorSegmento / 2;
+            const anguloHaciaPremio = (indiceElegido * gradosPorSegmento) + ajusteCentro;
+            
+            const baseRotacion = Math.ceil(rotacionAcumulada / 360) * 360;
+            rotacionAcumulada = baseRotacion + vueltasExtras + (360 - anguloHaciaPremio) - 90;
+            
+            canvas.style.transform = `rotate(${rotacionAcumulada}deg)`;
+
+            // GUARDAR MARCA EN EL DISPOSITIVO
+            localStorage.setItem('charlsClubRuletaParticipado', 'true');
 
             setTimeout(() => {
-                const anguloFinal = giroExtra % 360;
-                const indiceGanador = Math.floor((360 - (anguloFinal % 360)) / (360 / numPremios)) % numPremios;
-                const premioGanado = premios[indiceGanador];
-                const codigo = "PROMO" + Math.random().toString(36).substring(7).toUpperCase();
-
-                if(premioGanado === "Volvé a intentar") {
-                    txtResultado.innerText = "¡Ufa! Volvé a intentar mañana.";
+                overlay.style.display = 'flex';
+                if (premioGanado === "Vuelve a intentar") {
+                    document.getElementById('contenidoGanador').style.display = 'none';
+                    document.getElementById('contenidoPerdedor').style.display = 'block';
                 } else {
-                    txtResultado.innerText = `¡GANASTE! Premio: ${premioGanado}. Código: ${codigo}`;
-                    guardarEnExcel(inputEmail.value, premioGanado, codigo);
+                    document.getElementById('contenidoGanador').style.display = 'block';
+                    document.getElementById('contenidoPerdedor').style.display = 'none';
+                    const codigo = "CH-" + Math.random().toString(36).substring(7).toUpperCase();
+                    document.getElementById('modalPremio').innerText = premioGanado;
+                    document.getElementById('modalCodigo').innerText = codigo;
+                    enviarADatos(email, premioGanado, codigo);
                 }
-            }, tiempoAnimacion);
+            }, 5000);
         });
 
-        function guardarEnExcel(email, premio, codigo) {
-            const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyTNT6wjLxY6OKvQDZFrJM0rQyNAWUoDi7eGZ5D61kfPW1ye6KRULOP7vxn1_r-fvqzQg/exec";
-            fetch(URL_SCRIPT, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: email, premio: premio, codigo: codigo })
-            })
-            .then(() => console.log("¡Datos guardados!"))
-            .catch(error => console.error("Error:", error));
+        function obtenerPremioPorProbabilidad() {
+            const random = Math.random() * 100;
+            let acumulado = 0;
+            for (let i = 0; i < configPremios.length; i++) {
+                acumulado += configPremios[i].prob;
+                if (random <= acumulado) return i;
+            }
+            return 0;
+        }
+
+        function cerrarModal() {
+            overlay.style.display = 'none';
+            // Al cerrar, el formulario ya mostrará que ya participó
+            verificarParticipacion();
+        }
+
+        function enviarADatos(email, premio, codigo) {
+            const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxqoeRB12k4uRG9IH-T8SVH0IPDocypQTSUFp74JOw6J8r4OuI4iAuL_KXz45EOxo9aQw/exec"; 
+            const datos = new URLSearchParams();
+            datos.append("email", email);
+            datos.append("premio", premio);
+            datos.append("codigo", codigo);
+            fetch(URL_SCRIPT, { method: "POST", mode: "no-cors", body: datos });
         }
     </script>
 </body>
