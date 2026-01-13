@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     
     <style>
-        /* Mantenemos tu estilo original */
         @font-face {
             font-family: 'LamoricRowen';
             src: url('Lamoric Rowen TTF.ttf') format('truetype');
@@ -115,7 +114,6 @@
         button:hover { background: #1a3042; transform: translateY(-2px); }
         button:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* Estilos para el mensaje de "Ya participaste" */
         #mensajeYaParticipo {
             display: none;
             color: #d9534f;
@@ -204,7 +202,6 @@
         const camposRegistro = document.getElementById('camposRegistro');
         const mensajeYaParticipo = document.getElementById('mensajeYaParticipo');
 
-        // --- LÓGICA DE BLOQUEO POR DISPOSITIVO ---
         function verificarParticipacion() {
             if (localStorage.getItem('charlsClubRuletaParticipado')) {
                 btnGirar.disabled = true;
@@ -216,7 +213,6 @@
             return false;
         }
 
-        // Ejecutar al cargar la página
         verificarParticipacion();
 
         const configPremios = [
@@ -260,7 +256,6 @@
         dibujarRuleta();
 
         btnGirar.addEventListener('click', () => {
-            // Re-verificar antes de girar
             if (verificarParticipacion()) return;
 
             const email = inputEmail.value.trim();
@@ -281,7 +276,6 @@
             
             canvas.style.transform = `rotate(${rotacionAcumulada}deg)`;
 
-            // GUARDAR MARCA EN EL DISPOSITIVO
             localStorage.setItem('charlsClubRuletaParticipado', 'true');
 
             setTimeout(() => {
@@ -312,7 +306,6 @@
 
         function cerrarModal() {
             overlay.style.display = 'none';
-            // Al cerrar, el formulario ya mostrará que ya participó
             verificarParticipacion();
         }
 
