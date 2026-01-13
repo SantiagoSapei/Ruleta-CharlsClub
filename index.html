@@ -137,7 +137,7 @@
         .modal-premio .codigo-texto { font-size: 1.1rem; background: #eee; padding: 10px; border-radius: 5px; margin: 15px 0; border: 1px dashed #284863; }
         
         .sucursales { margin-top: 15px; font-size: 0.8rem; text-align: left; border-top: 1px solid #ddd; padding-top: 15px; }
-        .sucursales a { color: #284863; text-decoration: none; }
+        .sucursales a { color: #284863; text-decoration: none; font-weight: bold; }
 
         .logo-final { 
             margin-top: 20px; width: 280px; max-width: 80%; 
@@ -180,15 +180,23 @@
             <div class="premio-texto" id="modalPremio"></div>
             <p>Código de validación:</p>
             <div class="codigo-texto" id="modalCodigo"></div>
-            <p><strong>⚠️ Tomá una captura de pantalla.</strong></p>
-            <a href="https://www.instagram.com/charlsclub_/" target="_blank" style="color:#d9534f; font-weight:bold;">@Charlsclub</a>
-            <br><br>
+            <p><strong>⚠️ Tomá una captura de pantalla de este mensaje.</strong></p>
+            <p>Canjealo en nuestro Instagram:</p>
+            <a href="https://www.instagram.com/charlsclub_/" target="_blank" style="color:#d9534f; font-weight:bold; font-size: 1.2rem;">@Charlsclub</a>
+            
+            <div class="sucursales">
+                <strong>O visítanos en:</strong><br><br>
+                📍 <a href="https://www.google.com/maps/search/Almirante+Brown+890+Carlos+Pellegrini" target="_blank">Almirante Brown 890 (C. Pellegrini)</a><br>
+                📍 <a href="https://www.google.com/maps/search/General+Belgrano+820+San+Genaro" target="_blank">General Belgrano 820 (San Genaro)</a>
+            </div>
+            <br>
             <button onclick="cerrarModal()" style="width:auto; padding:10px 20px;">CERRAR</button>
         </div>
 
         <div class="modal-premio" id="contenidoPerdedor" style="display:none;">
             <h2>GRACIAS POR PARTICIPAR</h2>
             <p>Lamentablemente no has obtenido un premio esta vez.</p>
+            <br>
             <button onclick="cerrarModal()" style="width:auto; padding:10px 20px;">FINALIZAR</button>
         </div>
     </div>
@@ -310,13 +318,17 @@
         }
 
         function enviarADatos(email, premio, codigo) {
-            const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxqoeRB12k4uRG9IH-T8SVH0IPDocypQTSUFp74JOw6J8r4OuI4iAuL_KXz45EOxo9aQw/exec"; 
+            const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbx-XZTozI4RZDcuhohTTcAMyjtXUfChsFUD-I7TEsXVrkHogHJCDLCZCkz_5-Yn2bpe3Q/exec"; 
             const datos = new URLSearchParams();
             datos.append("email", email);
             datos.append("premio", premio);
             datos.append("codigo", codigo);
-            fetch(URL_SCRIPT, { method: "POST", mode: "no-cors", body: datos });
+            fetch(URL_SCRIPT, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: datos,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
         }
     </script>
 </body>
-</html>
